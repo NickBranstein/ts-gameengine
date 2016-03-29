@@ -19,6 +19,6 @@
     "gulp-useref": "^3.0.5",
     "main-bower-files": "^2.11.1",
     "run-sequence": "^1.1.5",
-    "typescript": "^1.9.0-dev.20160209"
+    "typescript": "1.8.9"
   }
 }
