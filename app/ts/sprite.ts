@@ -1,28 +1,30 @@
 module Engine {
    export class Sprite implements IAnimate, IRender {
        public frames: number;
-       public speed: number;
+       public fps: number;
        public image: HTMLImageElement;
        private currentFrame: number;
-       lastElapsedTime;
+       lastTimestamp;
        
-        constructor(public x: number, public y: number, public frameWidth: number, public frameHeight: number, source: string, frames?: number, speed?: number) {
+        constructor(public x: number, public y: number, public frameWidth: number, public frameHeight: number, source: string, frames?: number, fps?: number) {
             this.image = new Image();
             this.image.src = source;
             this.currentFrame = 0;
             this.frames = frames;
-            this.speed = speed;
-            this.lastElapsedTime = 0;
+            this.fps = fps;
+            this.lastTimestamp = 0;
         }
         
-        public render(context: CanvasRenderingContext2D, elapsedTime): void {
-            this.lastElapsedTime += elapsedTime;
-            //console.log(elapsedTime);
-            while(this.lastElapsedTime > this.speed){ // this will control how fast we loop through our spritemap
-                this.lastElapsedTime -= this.speed;
-                
-                if(this.frames != null)
-                    this.animate(context);        
+        public render(context: CanvasRenderingContext2D, timestamp): void {    
+            if (this.lastTimestamp == null || this.lastTimestamp == undefined) {
+                this.lastTimestamp = timestamp;
+            }
+            
+            let elapsedTime =  timestamp - this.lastTimestamp;
+            
+            if(this.frames != null && elapsedTime > (1000 / this.fps)){
+                    this.animate(context);    
+                    this.lastTimestamp = timestamp;    
             }
             
              // render the sprite
