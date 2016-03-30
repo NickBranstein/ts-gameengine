@@ -1,4 +1,4 @@
 # ts-gameengine
-A Lightweight Sprite Renderer writtens in TypeScript
+A Lightweight Sprite Renderer written in TypeScript during in my freetime during Code PaLOUsa 2016.
 
-# just run gulp from your favorite terminal to test out the example
+Just run gulp from your favorite terminal to test out the example.
