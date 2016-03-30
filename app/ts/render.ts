@@ -1,21 +1,26 @@
 module Engine {
+    export interface IRender {
+        render(context: CanvasRenderingContext2D): void;
+    }
+    
     export class Renderer {
         private animationFrame: number;
         private running: boolean;
         
-        constructor(private context: any) {   
+        constructor(private context: CanvasRenderingContext2D, private width: number, private height: number, public render: () => void) {   
         }
         
         public start() : any {
             this.running = true;
-            this.animationFrame = window.requestAnimationFrame(this.render)
+            this.animationFrame = window.requestAnimationFrame(this.renderLoop)
         }
         
-        public render = () : any =>  {
+        public renderLoop = () : any =>  {
             if (this.running) {
-                this.context.clearRect(0,0,800,600);
+                this.clear();
                 this.animate();            
-                window.requestAnimationFrame(this.render);    
+                this.render();
+                window.requestAnimationFrame(this.renderLoop);    
             }
         }
         
@@ -23,17 +28,17 @@ module Engine {
         public animate() : any {
             this.context.fillStyle = "#000000";
             this.context.font = "25px helvewtica"; 
-            this.context.fillText('This is just a test', 50, 50);
+            this.context.fillText('This is just a test', 100, 100);
         }
         
         public stop(){
-            this.context.clearRect(0,0,800,600);
+            this.clear()
             window.cancelAnimationFrame(this.animationFrame);
             this.running = false;
         }
-    }
-    
-    class Animator {
         
+        private clear(){
+            this.context.clearRect(0, 0, this.width, this.height);
+        }
     }
 }

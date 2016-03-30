@@ -12,16 +12,19 @@
     <!-- build:js js/main.min.js -->
     <script src="js/game.js"></script>
     <script src="js/render.js"></script>
+    <script src="js/sprite.js"></script>
     <!-- endbuild -->
     
-    <canvas id="canvas" width="800" height="600"></canvas>
+    <div style="text-align: center;">
+        <canvas id="canvas" width="800" height="600"></canvas>
+    <div>
 </body>
 </html>
 
 <script>
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
-    var game = new Game(context);
+    var game = new Game(context, canvas.width, canvas.height);
 
     game.start();
 </script>
