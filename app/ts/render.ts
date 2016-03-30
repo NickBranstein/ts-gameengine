@@ -1,26 +1,35 @@
 module Engine {
-    export interface IRender {
-        render(context: CanvasRenderingContext2D): void;
+    export interface IRender {        
+        lastElapsedTime;
+        render(context: CanvasRenderingContext2D, elapsedTime): void;
     }
     
     export class Renderer {
         private animationFrame: number;
         private running: boolean;
+        private lastTimestamp;
         
-        constructor(private context: CanvasRenderingContext2D, private width: number, private height: number, public render: () => void) {   
+        constructor(private context: CanvasRenderingContext2D, private width: number, private height: number, public render: (elapsedTime) => void) {   
         }
         
         public start() : any {
             this.running = true;
-            this.animationFrame = window.requestAnimationFrame(this.renderLoop)
+            this.animationFrame = window.requestAnimationFrame((timestamp) => this.renderLoop(timestamp));
         }
         
-        public renderLoop = () : any =>  {
+        public renderLoop(timestamp) {
+            if (this.lastTimestamp == null || this.lastTimestamp == undefined) {
+                this.lastTimestamp = timestamp;
+            }
+            
+            let elapsedTime = timestamp += this.lastTimestamp;
+            this.lastTimestamp = timestamp;
+            
             if (this.running) {
                 this.clear();
                 this.animate();            
-                this.render();
-                window.requestAnimationFrame(this.renderLoop);    
+                this.render(elapsedTime);
+                window.requestAnimationFrame((time) => this.renderLoop(time));    
             }
         }
         
